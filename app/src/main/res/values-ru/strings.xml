@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QuadraticEquation</string>
+    <string name="button_run">Рассчитать</string>
+    <string name="number_c">чиcло C</string>
+    <string name="number_a">чиcло A</string>
+    <string name="number_b">чиcло B</string>
+    <string name="first_root">первый кореть равен</string>
+    <string name="and_second_root">второй корень равен</string>
+    <string name="root1_root2">оба корня равны</string>
+</resources>
