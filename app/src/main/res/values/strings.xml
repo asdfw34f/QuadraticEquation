@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">QuadraticEquation</string>
+    <string name="button_run">Run</string>
+    <string name="number_c">number C</string>
+    <string name="number_a">number A</string>
+    <string name="number_b">number B</string>
+    <string name="first_root">"first root = "</string>
+    <string name="and_second_root">" and second root = "</string>
+    <string name="root1_root2">"root1 = root2 = "</string>
+</resources>
