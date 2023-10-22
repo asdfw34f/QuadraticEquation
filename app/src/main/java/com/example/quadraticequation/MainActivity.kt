@@ -104,7 +104,10 @@ fun GreetingPreview() {
             }
         )
         Text(result.value)
+/*
 
+application for finding the roots of a quadratic equation
+ */
         Button(onClick = {
             if (aString.value != "" && bString.value != "" && cString.value != "") {
 
