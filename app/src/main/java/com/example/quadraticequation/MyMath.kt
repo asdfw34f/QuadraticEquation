@@ -1,11 +1,7 @@
 package com.example.quadraticequation
 
-import android.content.Context
-import android.provider.Settings.Global.getString
-import androidx.compose.ui.res.stringResource
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.coroutines.coroutineContext
 import kotlin.math.sqrt
 
 class MyMath {
