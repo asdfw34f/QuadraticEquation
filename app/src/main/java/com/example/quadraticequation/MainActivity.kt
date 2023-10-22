@@ -1,6 +1,7 @@
 package com.example.quadraticequation
 
 import android.os.Bundle
+import android.provider.Settings.Global.getString
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -18,14 +19,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.quadraticequation.ui.theme.QuadraticEquationTheme
 import java.lang.Math.*
-import java.math.BigDecimal
-import java.math.RoundingMode
-import kotlin.math.sqrt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,19 +39,19 @@ class MainActivity : ComponentActivity() {
                         .height(950.dp),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GreetingPreview()
+                    MainView()
                 }
             }
         }
     }
 }
 
- 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainView() {
+    val context = LocalContext.current
+
     val result = remember {
         mutableStateOf("")
     }
@@ -73,9 +73,7 @@ fun GreetingPreview() {
         TextField(
             value = aString.value,
             onValueChange = {
-                if (it.toDoubleOrNull() != null || it == "-") {
-                    aString.value = it
-                }
+                if (it.toDoubleOrNull() != null || it == "-") aString.value = it
             },
             label = {
                 Text(stringResource(R.string.number_a))
@@ -84,9 +82,7 @@ fun GreetingPreview() {
         TextField(
             value = bString.value,
             onValueChange = {
-                if (it.toDoubleOrNull() != null || it == "-") {
-                    bString.value = it
-                }
+                if (it.toDoubleOrNull() != null || it == "-") bString.value = it
             },
             label = {
                 Text(stringResource(R.string.number_b))
@@ -95,28 +91,29 @@ fun GreetingPreview() {
         TextField(
             value = cString.value,
             onValueChange = {
-                if (it.toDoubleOrNull() != null || it == "-") {
-                    cString.value = it
-                }
+                if (it.toDoubleOrNull() != null || it == "-") cString.value = it
             },
             label = {
                 Text(stringResource(R.string.number_c))
             }
         )
         Text(result.value)
-/*
 
-application for finding the roots of a quadratic equation
- */
         Button(onClick = {
-            if (aString.value != "" && bString.value != "" && cString.value != "") {
+            if (aString.value != "" && bString.value != "" && cString.value != ""){
+                result.value = "f"
 
-                val a = aString.value.toDouble()
-                val b = bString.value.toDouble()
-                val c = cString.value.toDouble()
-                val m = MyMath()
-                result.value = m.calculation(a, b, c)
-
+                val res = MyMath()
+                    .calculation(
+                        aString.value.toDouble(),
+                        bString.value.toDouble(),
+                        cString.value.toDouble()
+                    )
+                if (res[0] == res[1]){
+                    result.value = "${context.getString(R.string.root1_root2)} ${res[0]}"
+                } else{
+                    result.value = "${context.getString(R.string.first_root)} ${res[0]}, ${context.getString(R.string.and_second_root)} ${res[1]}"
+                }
             }
         }) {
             Text(stringResource(R.string.button_run))
