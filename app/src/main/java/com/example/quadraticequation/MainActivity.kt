@@ -1,18 +1,20 @@
 package com.example.quadraticequation
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.quadraticequation.ui.theme.QuadraticEquationTheme
 import java.lang.Math.*
 
@@ -47,7 +50,10 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun MainView() {
+fun MainView(
+    vm: QuadraticeViewModel = viewModel()
+) {
+
     val context = LocalContext.current
 
     val result = remember {
@@ -68,7 +74,7 @@ fun MainView() {
         verticalArrangement = Arrangement.Center
     ) {
 
-        TextField(
+        OutlinedTextField(
             value = aString.value,
             onValueChange = {
                 if (it.toDoubleOrNull() != null || it == "-") aString.value = it
@@ -77,7 +83,8 @@ fun MainView() {
                 Text(stringResource(R.string.number_a))
             }
         )
-        TextField(
+
+        OutlinedTextField(
             value = bString.value,
             onValueChange = {
                 if (it.toDoubleOrNull() != null || it == "-") bString.value = it
@@ -86,7 +93,21 @@ fun MainView() {
                 Text(stringResource(R.string.number_b))
             }
         )
-        TextField(
+/*
+  Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        OutlinedTextField(
+            value = number1,
+            onValueChange = { number1 = if ((it.toIntOrNull() != null) || (it == "-") || it.isNullOrBlank()) it  else number1},
+            label = { Text(text = "Number 1") }
+        )
+ */
+        OutlinedTextField(
             value = cString.value,
             onValueChange = {
                 if (it.toDoubleOrNull() != null || it == "-") cString.value = it
@@ -95,22 +116,27 @@ fun MainView() {
                 Text(stringResource(R.string.number_c))
             }
         )
+        Spacer(modifier = Modifier )
         Text(result.value)
 
         Button(onClick = {
-            if (aString.value != "" && bString.value != "" && cString.value != ""){
-                result.value = "f"
-
-                val res = MyMath()
-                    .calculation(
+            if (aString.value != "" && bString.value != "" && cString.value != "") {
+                 val res = vm.searchRoot(
+                    QuadraticeModel(
                         aString.value.toDouble(),
                         bString.value.toDouble(),
                         cString.value.toDouble()
                     )
-                if (res[0] == res[1]){
-                    result.value = "${context.getString(R.string.root1_root2)} ${res[0]}"
-                } else{
-                    result.value = "${context.getString(R.string.first_root)} ${res[0]}, ${context.getString(R.string.and_second_root)} ${res[1]}"
+                )
+
+                result.value = if (res.first == res.second) {
+                    "${context.getString(R.string.root1_root2)} ${res.second}"
+                } else {
+                    "${context.getString(R.string.first_root)} ${res.second}, ${
+                        context.getString(
+                            R.string.and_second_root
+                        )
+                    } ${res.first}"
                 }
             }
         }) {

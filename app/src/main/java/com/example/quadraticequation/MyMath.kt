@@ -7,10 +7,9 @@ import kotlin.math.sqrt
 class MyMath {
     private fun determinant(a: Double, b: Double, c: Double):Double = b * b - 4.0 * a * c
 
-    fun calculation(a: Double, b: Double,c: Double):List<BigDecimal>{
+    fun calculation(a: Double, b: Double,c: Double):Pair<BigDecimal, BigDecimal>{
         val root1: BigDecimal
         val root2: BigDecimal
-
         val myDeterminant = determinant(a, b, c)
 
         if (myDeterminant > 0) {
@@ -38,6 +37,6 @@ class MyMath {
             root2 = realPart - imaginaryPart
             // return "${R.string.first_root} $realPart + $imaginaryPart ${R.string.and_second_root} $realPart - $imaginaryPart"
         }
-        return listOf(root1, root2)
+        return Pair(root1, root2)
     }
 }
